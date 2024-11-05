@@ -1,162 +1,160 @@
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 20px;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    margin: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    max-width: 600px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
-
-input, textarea {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s;
-}
-
-input:focus, textarea:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.ponto, .discussao {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-.button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.button:hover {
-    background-color: #0056b3;
-}
-
-.button:active {
-    background-color: #004494;
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
     text-align: center;
+    color: #343a40;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-    body {
-        margin: 10px;
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 20px;
-    }
-
-    input, textarea {
-        padding: 8px;
-    }
-
-    .button {
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-
-    .ponto, .discussao {
-        padding: 10px;
-    }
+form {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 700px;
+    margin: auto;
+    border: 1px solid #ced4da;
+    transition: transform 0.3s;
 }
 
-@media (max-width: 480px) {
-    body {
-        margin: 5px;
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 18px;
-    }
-
-    input, textarea {
-        padding: 6px;
-    }
-
-    .button {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .ponto, .discussao {
-        padding: 8px;
-    }
+label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+    color: #495057;
 }
 
-.remove-participant, .remove-point, .remove-action {
-    background-color: #ff4c4c;
-    color: white;
+input[type="text"],
+input[type="date"],
+input[type="time"],
+textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+button {
+    background-color: #007bff;
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
-    padding: 5px 8px;
+    border-radius: 6px;
+    padding: 14px 22px;
     cursor: pointer;
-    margin-left: 10px;
-    font-size: 14px;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.remove-participant:hover, .remove-point:hover, .remove-action:hover {
-    background-color: #e63939;
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+#participantes-list,
+#agenda,
+#acoes-pendentes {
+    margin-bottom: 20px;
+}
+
+.participante,
+.ponto,
+.discussao {
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 5px solid #007bff;
+    transition: background-color 0.3s;
+    display: flex;
+    flex-direction: column; 
+}
+
+.participante:hover,
+.ponto:hover,
+.discussao:hover {
+    background-color: #e2e6ea;
+}
+
+.remove-participant,
+.remove-point,
+.remove-action {
+    background-color: #dc3545;
+    margin-left: 10px;
+}
+
+.remove-participant:hover,
+.remove-point:hover,
+.remove-action:hover {
+    background-color: #c82333;
 }
 
 .add-button {
     background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 8px;
-    cursor: pointer;
     margin-left: 10px;
-    font-size: 14px;
-    transition: background-color 0.3s;
 }
 
 .add-button:hover {
     background-color: #218838;
 }
 
-.action-container {
+h3 {
+    margin-top: 30px;
+    color: #343a40;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.participante input,
+.ponto input,
+.discussao input,
+.participante textarea,
+.ponto textarea,
+.discussao textarea {
+    margin-bottom: 10px; 
+}
+
+.buttons {
     display: flex;
-    align-items: center;
+    align-items: center; 
+    justify-content: flex-start; 
 }
 
-.action-container input,
-.action-container textarea {
-    flex: 1;
-    margin-right: 10px;
+.remove-participant,
+.remove-point,
+.remove-action,
+.add-button {
+    margin-left: 10px; 
 }
 
-.ponto,
-.discussao {
-    margin-bottom: 20px;
+.participante button,
+.ponto button,
+.discussao button {
+    padding: 8px 12px; 
+}
+
+/* Estilo para os botões no contêiner */
+.buttons {
+    display: flex;
+    gap: 5px; /* Espaço entre os botões */
+    align-items: center; /* Alinha verticalmente os botões */
 }

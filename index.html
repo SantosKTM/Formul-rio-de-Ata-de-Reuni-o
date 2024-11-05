@@ -34,8 +34,10 @@
     <div id="participantes-list">
         <div class="participante">
             <input type="text" name="participante[]" required>
-            <button type="button" class="remove-participant" onclick="removeParticipant(this)">x</button>
-            <button type="button" class="add-button" id="add-participant">+</button>
+            <div class="buttons">
+                <button type="button" class="remove-participant" onclick="removeParticipant(this)">-</button>
+                <button type="button" class="add-button" id="add-participant">+</button>
+            </div>
         </div>
     </div>
 
@@ -44,8 +46,10 @@
         <div class="ponto">
             <label for="tituloPonto">Título do Ponto:</label>
             <input type="text" name="tituloPonto[]" required>
-            <button type="button" class="remove-point" onclick="removePoint(this)">x</button>
-            <button type="button" class="add-button" id="add-point">+</button>
+            <div class="buttons">
+                <button type="button" class="remove-point" onclick="removePoint(this)">-</button>
+                <button type="button" class="add-button" id="add-point">+</button>
+            </div>
 
             <label for="discussaoPonto">Discussão:</label>
             <textarea name="discussaoPonto[]" rows="4" required></textarea>
@@ -66,8 +70,10 @@
         <div class="discussao">
             <label for="acao">Ação:</label>
             <input type="text" name="acao[]" required>
-            <button type="button" class="remove-action" onclick="removeAction(this)">x</button>
-            <button type="button" class="add-button" id="add-action">+</button>
+            <div class="buttons">
+                <button type="button" class="remove-action" onclick="removeAction(this)">-</button>
+                <button type="button" class="add-button" id="add-action">+</button>
+            </div>
 
             <label for="responsavelAcao">Responsável:</label>
             <input type="text" name="responsavelAcao[]" required>
@@ -99,14 +105,16 @@
         newParticipant.className = 'participante';
         newParticipant.innerHTML = `
             <input type="text" name="participante[]" required>
-            <button type="button" class="remove-participant" onclick="removeParticipant(this)">x</button>
-            <button type="button" class="add-button">+</button>
+            <div class="buttons">
+                <button type="button" class="remove-participant" onclick="removeParticipant(this)">-</button>
+                <button type="button" class="add-button">+</button>
+            </div>
         `;
         participantesDiv.appendChild(newParticipant);
     });
 
     function removeParticipant(button) {
-        const participantDiv = button.parentElement;
+        const participantDiv = button.parentElement.parentElement;
         participantDiv.remove();
     }
 
@@ -117,8 +125,10 @@
         newPoint.innerHTML = `
             <label for="tituloPonto">Título do Ponto:</label>
             <input type="text" name="tituloPonto[]" required>
-            <button type="button" class="remove-point" onclick="removePoint(this)">x</button>
-            <button type="button" class="add-button">+</button>
+            <div class="buttons">
+                <button type="button" class="remove-point" onclick="removePoint(this)">-</button>
+                <button type="button" class="add-button">+</button>
+            </div>
 
             <label for="discussaoPonto">Discussão:</label>
             <textarea name="discussaoPonto[]" rows="4" required></textarea>
@@ -136,7 +146,7 @@
     });
 
     function removePoint(button) {
-        const pointDiv = button.parentElement;
+        const pointDiv = button.parentElement.parentElement;
         pointDiv.remove();
     }
 
@@ -147,8 +157,10 @@
         newAction.innerHTML = `
             <label for="acao">Ação:</label>
             <input type="text" name="acao[]" required>
-            <button type="button" class="remove-action" onclick="removeAction(this)">x</button>
-            <button type="button" class="add-button">+</button>
+            <div class="buttons">
+                <button type="button" class="remove-action" onclick="removeAction(this)">-</button>
+                <button type="button" class="add-button">+</button>
+            </div>
 
             <label for="responsavelAcao">Responsável:</label>
             <input type="text" name="responsavelAcao[]" required>
@@ -160,7 +172,7 @@
     });
 
     function removeAction(button) {
-        const actionDiv = button.parentElement;
+        const actionDiv = button.parentElement.parentElement;
         actionDiv.remove();
     }
 
@@ -183,7 +195,7 @@
                 responsavel: document.querySelectorAll('input[name="responsavelPonto[]"]')[index].value,
                 prazo: document.querySelectorAll('input[name="prazoPonto[]"]')[index].value,
             })),
-            acoes: Array.from(document.querySelectorAll('input[name="acao[]"]')).map((input, index) => ({
+            acoesPendentes: Array.from(document.querySelectorAll('input[name="acao[]"]')).map((input, index) => ({
                 acao: input.value,
                 responsavel: document.querySelectorAll('input[name="responsavelAcao[]"]')[index].value,
                 prazo: document.querySelectorAll('input[name="prazoAcao[]"]')[index].value,
@@ -193,37 +205,60 @@
             facilitadorProxima: document.getElementById('facilitadorProxima').value,
         };
 
-        doc.text(`Título da Reunião: ${data.tituloReuniao}`, 10, 10);
-        doc.text(`Data: ${data.dataReuniao}`, 10, 20);
-        doc.text(`Hora de Início: ${data.horaInicio}`, 10, 30);
-        doc.text(`Hora de Término: ${data.horaTermino}`, 10, 40);
-        doc.text(`Local: ${data.local}`, 10, 50);
-        doc.text(`Facilitador: ${data.facilitador}`, 10, 60);
-        
-        doc.text('Participantes:', 10, 70);
-        data.participantes.forEach((p, i) => {
-            doc.text(`- ${p}`, 10, 80 + (i * 10));
+        let y = 10;
+
+        doc.text(`Título da Reunião: ${data.tituloReuniao}`, 10, y);
+        y += 10;
+        doc.text(`Data da Reunião: ${data.dataReuniao}`, 10, y);
+        y += 10;
+        doc.text(`Hora de Início: ${data.horaInicio}`, 10, y);
+        y += 10;
+        doc.text(`Hora de Término: ${data.horaTermino}`, 10, y);
+        y += 10;
+        doc.text(`Local: ${data.local}`, 10, y);
+        y += 10;
+        doc.text(`Facilitador: ${data.facilitador}`, 10, y);
+        y += 10;
+
+        doc.text('Participantes:', 10, y);
+        y += 10;
+        data.participantes.forEach(part => {
+            doc.text(`- ${part}`, 10, y);
+            y += 10;
         });
 
-        doc.text('Pontos da Agenda:', 10, 80 + (data.participantes.length * 10 + 10));
-        data.pontos.forEach((p, i) => {
-            doc.text(`Título: ${p.titulo}`, 10, 90 + (data.participantes.length * 10 + i * 40));
-            doc.text(`Discussão: ${p.discussao}`, 10, 100 + (data.participantes.length * 10 + i * 40));
-            doc.text(`Decisões: ${p.decisoes}`, 10, 110 + (data.participantes.length * 10 + i * 40));
-            doc.text(`Responsável: ${p.responsavel}`, 10, 120 + (data.participantes.length * 10 + i * 40));
-            doc.text(`Prazo: ${p.prazo}`, 10, 130 + (data.participantes.length * 10 + i * 40));
+        doc.text('Pontos da Agenda:', 10, y);
+        y += 10;
+        data.pontos.forEach(ponto => {
+            doc.text(`Título: ${ponto.titulo}`, 10, y);
+            y += 10;
+            doc.text(`Discussão: ${ponto.discussao}`, 10, y);
+            y += 10;
+            doc.text(`Decisões: ${ponto.decisoes}`, 10, y);
+            y += 10;
+            doc.text(`Responsável: ${ponto.responsavel}`, 10, y);
+            y += 10;
+            doc.text(`Prazo: ${ponto.prazo}`, 10, y);
+            y += 10;
         });
 
-        doc.text('Ações Pendentes:', 10, 90 + (data.participantes.length * 10 + data.pontos.length * 40 + 10));
-        data.acoes.forEach((a, i) => {
-            doc.text(`Ação: ${a.acao}`, 10, 100 + (data.participantes.length * 10 + data.pontos.length * 40 + i * 30));
-            doc.text(`Responsável: ${a.responsavel}`, 10, 110 + (data.participantes.length * 10 + data.pontos.length * 40 + i * 30));
-            doc.text(`Prazo: ${a.prazo}`, 10, 120 + (data.participantes.length * 10 + data.pontos.length * 40 + i * 30));
+        doc.text('Ações Pendentes:', 10, y);
+        y += 10;
+        data.acoesPendentes.forEach(acao => {
+            doc.text(`Ação: ${acao.acao}`, 10, y);
+            y += 10;
+            doc.text(`Responsável: ${acao.responsavel}`, 10, y);
+            y += 10;
+            doc.text(`Prazo: ${acao.prazo}`, 10, y);
+            y += 10;
         });
 
-        doc.text(`Próxima Reunião: ${data.dataProxima}`, 10, 90 + (data.participantes.length * 10 + data.pontos.length * 40 + data.acoes.length * 30 + 10));
-        doc.text(`Local: ${data.localProxima}`, 10, 100 + (data.participantes.length * 10 + data.pontos.length * 40 + data.acoes.length * 30 + 10));
-        doc.text(`Facilitador: ${data.facilitadorProxima}`, 10, 110 + (data.participantes.length * 10 + data.pontos.length * 40 + data.acoes.length * 30 + 10));
+        doc.text(`Data da Próxima Reunião: ${data.dataProxima}`, 10, y);
+        y += 10;
+        doc.text(`Local: ${data.localProxima}`, 10, y);
+        y += 10;
+        doc.text(`Facilitador: ${data.facilitadorProxima}`, 10, y);
+        y += 10;
 
         doc.save('ata_reuniao.pdf');
     });
