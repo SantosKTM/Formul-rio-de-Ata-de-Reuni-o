@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Ata de Reunião</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+<h1>Formulário de Ata de Reunião</h1>
+
+<form id="meeting-form">
+
+    <label for="tituloReuniao">Título da Reunião:</label>
+    <input type="text" id="tituloReuniao" name="tituloReuniao" required>
+
+    <label for="data">Data da Reunião:</label>
+    <input type="date" id="data" name="data" required>
+
+    <label for="horaInicio">Hora de Início:</label>
+    <input type="time" id="horaInicio" name="horaInicio" required>
+
+    <label for="horaTermino">Hora de Término:</label>
+    <input type="time" id="horaTermino" name="horaTermino" required>
+
+    <label for="local">Local:</label>
+    <input type="text" id="local" name="local" required>
+
+    <label for="facilitador">Facilitador:</label>
+    <input type="text" id="facilitador" name="facilitador" required>
+
+    <label for="participantes">Participantes:</label>
+    <div id="participantes-list">
+        <div class="participante">
+            <input type="text" name="participante[]" required>
+            <button type="button" class="remove-participant" onclick="removeParticipant(this)">x</button>
+            <button type="button" class="add-button" id="add-participant">+</button>
+        </div>
+    </div>
+
+    <h3>Agenda</h3>
+    <div id="agenda">
+        <div class="ponto">
+            <label for="tituloPonto">Título do Ponto:</label>
+            <input type="text" name="tituloPonto[]" required>
+            <button type="button" class="remove-point" onclick="removePoint(this)">x</button>
+            <button type="button" class="add-button" id="add-point">+</button>
+
+            <label for="discussaoPonto">Discussão:</label>
+            <textarea name="discussaoPonto[]" rows="4" required></textarea>
+
+            <label for="decisoesPonto">Decisões:</label>
+            <textarea name="decisoesPonto[]" rows="2" required></textarea>
+
+            <label for="responsavelPonto">Responsável:</label>
+            <input type="text" name="responsavelPonto[]" required>
+
+            <label for="prazoPonto">Prazo:</label>
+            <input type="date" name="prazoPonto[]" required>
+        </div>
+    </div>
+
+    <h3>Ações Pendentes</h3>
+    <div id="acoes-pendentes">
+        <div class="discussao">
+            <label for="acao">Ação:</label>
+            <input type="text" name="acao[]" required>
+            <button type="button" class="remove-action" onclick="removeAction(this)">x</button>
+            <button type="button" class="add-button" id="add-action">+</button>
+
+            <label for="responsavelAcao">Responsável:</label>
+            <input type="text" name="responsavelAcao[]" required>
+
+            <label for="prazoAcao">Prazo:</label>
+            <input type="date" name="prazoAcao[]" required>
+        </div>
+    </div>
+
+    <h3>Próxima Reunião</h3>
+    <label for="dataProxima">Data da Próxima Reunião:</label>
+    <input type="date" id="dataProxima" name="dataProxima" required>
+
+    <label for="localProxima">Local:</label>
+    <input type="text" id="localProxima" name="localProxima" required>
+
+    <label for="facilitadorProxima">Facilitador:</label>
+    <input type="text" id="facilitadorProxima" name="facilitadorProxima" required>
+
+    <button type="button" class="button" id="generate-pdf">Gerar PDF</button>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+    document.getElementById('add-participant').addEventListener('click', function() {
+        const participantesDiv = document.getElementById('participantes-list');
+        const newParticipant = document.createElement('div');
+        newParticipant.className = 'participante';
+        newParticipant.innerHTML = `
+            <input type="text" name="participante[]" required>
+            <button type="button" class="remove-participant" onclick="removeParticipant(this)">x</button>
+            <button type="button" class="add-button">+</button>
+        `;
+        participantesDiv.appendChild(newParticipant);
+    });
+
+    function removeParticipant(button) {
+        const participantDiv = button.parentElement;
+        participantDiv.remove();
+    }
+
+    document.getElementById('add-point').addEventListener('click', function() {
+        const agendaDiv = document.getElementById('agenda');
+        const newPoint = document.createElement('div');
+        newPoint.className = 'ponto';
+        newPoint.innerHTML = `
+            <label for="tituloPonto">Título do Ponto:</label>
+            <input type="text" name="tituloPonto[]" required>
+            <button type="button" class="remove-point" onclick="removePoint(this)">x</button>
+            <button type="button" class="add-button">+</button>
+
+            <label for="discussaoPonto">Discussão:</label>
+            <textarea name="discussaoPonto[]" rows="4" required></textarea>
+
+            <label for="decisoesPonto">Decisões:</label>
+            <textarea name="decisoesPonto[]" rows="2" required></textarea>
+
+            <label for="responsavelPonto">Responsável:</label>
+            <input type="text" name="responsavelPonto[]" required>
+
+            <label for="prazoPonto">Prazo:</label>
+            <input type="date" name="prazoPonto[]" required>
+        `;
+        agendaDiv.appendChild(newPoint);
+    });
+
+    function removePoint(button) {
+        const pointDiv = button.parentElement;
+        pointDiv.remove();
+    }
+
+    document.getElementById('add-action').addEventListener('click', function() {
+        const actionsDiv = document.getElementById('acoes-pendentes');
+        const newAction = document.createElement('div');
+        newAction.className = 'discussao';
+        newAction.innerHTML = `
+            <label for="acao">Ação:</label>
+            <input type="text" name="acao[]" required>
+            <button type="button" class="remove-action" onclick="removeAction(this)">x</button>
+            <button type="button" class="add-button">+</button>
+
+            <label for="responsavelAcao">Responsável:</label>
+            <input type="text" name="responsavelAcao[]" required>
+
+            <label for="prazoAcao">Prazo:</label>
+            <input type="date" name="prazoAcao[]" required>
+        `;
+        actionsDiv.appendChild(newAction);
+    });
+
+    function removeAction(button) {
+        const actionDiv = button.parentElement;
+        actionDiv.remove();
+    }
+
+    document.getElementById('generate-pdf').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const data = {
+            tituloReuniao: document.getElementById('tituloReuniao').value,
+            dataReuniao: document.getElementById('data').value,
+            horaInicio: document.getElementById('horaInicio').value,
+            horaTermino: document.getElementById('horaTermino').value,
+            local: document.getElementById('local').value,
+            facilitador: document.getElementById('facilitador').value,
+            participantes: Array.from(document.querySelectorAll('input[name="participante[]"]')).map(input => input.value),
+            pontos: Array.from(document.querySelectorAll('input[name="tituloPonto[]"]')).map((input, index) => ({
+                titulo: input.value,
+                discussao: document.querySelectorAll('textarea[name="discussaoPonto[]"]')[index].value,
+                decisoes: document.querySelectorAll('textarea[name="decisoesPonto[]"]')[index].value,
+                responsavel: document.querySelectorAll('input[name="responsavelPonto[]"]')[index].value,
+                prazo: document.querySelectorAll('input[name="prazoPonto[]"]')[index].value,
+            })),
+            acoes: Array.from(document.querySelectorAll('input[name="acao[]"]')).map((input, index) => ({
+                acao: input.value,
+                responsavel: document.querySelectorAll('input[name="responsavelAcao[]"]')[index].value,
+                prazo: document.querySelectorAll('input[name="prazoAcao[]"]')[index].value,
+            })),
+            dataProxima: document.getElementById('dataProxima').value,
+            localProxima: document.getElementById('localProxima').value,
+            facilitadorProxima: document.getElementById('facilitadorProxima').value,
+        };
+
+        doc.text(`Título da Reunião: ${data.tituloReuniao}`, 10, 10);
+        doc.text(`Data: ${data.dataReuniao}`, 10, 20);
+        doc.text(`Hora de Início: ${data.horaInicio}`, 10, 30);
+        doc.text(`Hora de Término: ${data.horaTermino}`, 10, 40);
+        doc.text(`Local: ${data.local}`, 10, 50);
+        doc.text(`Facilitador: ${data.facilitador}`, 10, 60);
+        
+        doc.text('Participantes:', 10, 70);
+        data.participantes.forEach((p, i) => {
+            doc.text(`- ${p}`, 10, 80 + (i * 10));
+        });
+
+        doc.text('Pontos da Agenda:', 10, 80 + (data.participantes.length * 10 + 10));
+        data.pontos.forEach((p, i) => {
+            doc.text(`Título: ${p.titulo}`, 10, 90 + (data.participantes.length * 10 + i * 40));
+            doc.text(`Discussão: ${p.discussao}`, 10, 100 + (data.participantes.length * 10 + i * 40));
+            doc.text(`Decisões: ${p.decisoes}`, 10, 110 + (data.participantes.length * 10 + i * 40));
+            doc.text(`Responsável: ${p.responsavel}`, 10, 120 + (data.participantes.length * 10 + i * 40));
+            doc.text(`Prazo: ${p.prazo}`, 10, 130 + (data.participantes.length * 10 + i * 40));
+        });
+
+        doc.text('Ações Pendentes:', 10, 90 + (data.participantes.length * 10 + data.pontos.length * 40 + 10));
+        data.acoes.forEach((a, i) => {
+            doc.text(`Ação: ${a.acao}`, 10, 100 + (data.participantes.length * 10 + data.pontos.length * 40 + i * 30));
+            doc.text(`Responsável: ${a.responsavel}`, 10, 110 + (data.participantes.length * 10 + data.pontos.length * 40 + i * 30));
+            doc.text(`Prazo: ${a.prazo}`, 10, 120 + (data.participantes.length * 10 + data.pontos.length * 40 + i * 30));
+        });
+
+        doc.text(`Próxima Reunião: ${data.dataProxima}`, 10, 90 + (data.participantes.length * 10 + data.pontos.length * 40 + data.acoes.length * 30 + 10));
+        doc.text(`Local: ${data.localProxima}`, 10, 100 + (data.participantes.length * 10 + data.pontos.length * 40 + data.acoes.length * 30 + 10));
+        doc.text(`Facilitador: ${data.facilitadorProxima}`, 10, 110 + (data.participantes.length * 10 + data.pontos.length * 40 + data.acoes.length * 30 + 10));
+
+        doc.save('ata_reuniao.pdf');
+    });
+</script>
+
+</body>
+</html>
